@@ -1,0 +1,27 @@
+{
+    "name": "abdulbaset/filter-question-from-linkedin-elements",
+    "description":"The abdulbaset/filter-question-from-linkedin-elements package is an open-source javascript package used to filter LinkedIn HTML elements in the Skills section. The package extracts only the question and answers from the HTML elements.",
+    "version": "1.0.0",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "DigitalAtum\\Abdulbaset\\FQFLE\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "AbdulBaset R. Sayed",
+            "email": "abdulbaset_rs@digitalatum.com"
+        }
+    ],
+    "keywords": [
+        "linkedin",
+        "skills",
+        "success",
+        "filter",
+        "question",
+        "linkedin",
+        "elements"
+    ],
+    "homepage": "https://digitalatum.com"
+}

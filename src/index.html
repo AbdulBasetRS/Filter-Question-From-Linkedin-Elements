@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>filter question from linkedin elements</title>
+</head>
+<body>
+  <style>
+    textarea{
+      width: 80%;
+      margin: 2px 0px;
+      padding: 10px;
+    }
+    button{
+      width: 100%;
+      margin: 2px 0px;
+      padding: 10px;
+    }
+    .styleClass{
+      text-align: center;
+      /* display: flex; */
+      /* align-items: center; */
+      /* justify-content: space-between; */
+    }
+  </style>
+    <div class="styleClass">
+      <textarea id="textarea" ></textarea>
+      <button id="buttonCopy" >Copy After Fillter</button>
+    </div>
+    <div id="data"></div>
+    <div id="myDiv" style="display: none;">
+    </div>
+  
+    <script>
+      const data = document.getElementById('data');
+      const myDiv = document.getElementById('myDiv');
+      const textarea = document.getElementById('textarea');
+      const buttonCopy = document.getElementById('buttonCopy');
+      const beforContentArabic = 'اريد الاجابه على هذا السؤال سواء A OR B OR C OR D فقط \n ';
+      const beforContentEnglish = 'I want to answer this question like A OR B OR C OR D only \n ';
+      const classesToRemoveWithoutContent = ['sa-question-basic-multichoice__multiline', 'sa-assessment-quiz__multi-line'];
+      var extractedContent = {};
+
+      elementArray = ['sa-assessment-flow__header', 'visually-hidden','sa-assessment-quiz__feedback','mtA','sa-assessment-quiz__footer','ember3469'];
+
+      textarea.addEventListener('input', function() {
+        const value = textarea.value;
+        myDiv.innerHTML = value;
+      });
+
+      if (buttonCopy) {
+        buttonCopy.addEventListener('click', function() {
+          removeElementsByClasses(elementArray);
+          var paragraphs = document.getElementsByTagName('p');
+          var paragraphContents = [];
+          var paragraphContentsInString = '';
+          for (var i = 0; i < paragraphs.length; i++) {
+            var content = paragraphs[i].innerHTML;
+            paragraphContents.push(content);
+            paragraphContentsInString += content;
+          }
+          const RemoveFromParagraphsString = paragraphContentsInString.replace(/<!---->/g , '');
+          //const newString = removeSpansByClass();
+          classesToRemoveWithoutContent.forEach(function(className) {
+            extractedContent[className] = getContentInsideSpansByClass(className);
+          });
+          
+          // console.log(extractedContent);
+          const newInnerHTML = makeInnerHTML(extractedContent);
+          console.log(beforContentEnglish + newInnerHTML);
+
+          navigator.clipboard.writeText(beforContentEnglish + newInnerHTML);
+          //data.innerHTML = beforContentEnglish + '<br>' + newInnerHTML.replace(/\n/g,'<br>');
+
+        });
+      }
+
+      function makeInnerHTML(object) {
+        let innerHTML = '';
+        let question = '';
+        for (const [className, values] of Object.entries(object)) {
+          for (const value of values) {
+            if (className === 'sa-assessment-quiz__multi-line') {
+              question += 'The question IS - ' + value + '\n';
+            }else{
+              innerHTML += value + '\n';
+            }
+          }
+        }
+        return question + innerHTML;
+      }
+      function getContentInsideSpansByClass(className) {
+        var spans = document.getElementsByClassName(className);
+        var contents = [];
+      
+        Array.from(spans).forEach(function(span) {
+          contents.push(span.textContent);
+        });
+      
+        return contents;
+      }
+      function removeAllElements(string) {
+        const regex = new RegExp('<[^>]+>', 'gi');
+        return string.replace(regex, '');
+      }
+      function removeElementsByClasses(classNames) {
+        var removedValues = [];
+        classNames.forEach(function(className) {
+          var elements = document.getElementsByClassName(className);
+          Array.from(elements).forEach(function(element) {
+            var removedValue = element.innerHTML;
+            element.parentNode.removeChild(element);
+            removedValues.push(removedValue);
+          });
+        });
+        return removedValues;
+      }
+    </script>
+</body>
+</html>
+
