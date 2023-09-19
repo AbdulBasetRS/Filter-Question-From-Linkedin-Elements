@@ -10,4 +10,4 @@
 ![Screenshot 2](/media/2.PNG)
 
 - after finished the test you will be getting the skills success ISA.
-![Screenshot 3](/media/3.png)
+![Screenshot 3](/media/3.PNG)
